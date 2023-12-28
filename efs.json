@@ -1,0 +1,25 @@
+{
+    "OwnerId": "660034698331",
+    "CreationToken": "creation-token",
+    "FileSystemId": "fs-01fa618cf27cccf8d",
+    "FileSystemArn": "arn:aws:elasticfilesystem:us-east-1:660034698331:file-system/fs-01fa618cf27cccf8d",
+    "CreationTime": 1695656511.0,
+    "LifeCycleState": "creating",
+    "Name": "MyEFSFileSystem",
+    "NumberOfMountTargets": 0,
+    "SizeInBytes": {
+        "Value": 0,
+        "ValueInIA": 0,
+        "ValueInStandard": 0
+    },
+    "PerformanceMode": "generalPurpose",
+    "Encrypted": true,
+    "KmsKeyId": "arn:aws:kms:us-east-1:660034698331:key/8b5ae916-26b1-4b93-99b8-b148b84cbee7",
+    "ThroughputMode": "bursting",
+    "Tags": [
+        {
+            "Key": "Name",
+            "Value": "MyEFSFileSystem"
+        }
+    ]
+}

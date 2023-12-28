@@ -1,0 +1,16 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: my-backendconfig
+spec:
+  iap:
+    enabled: true
+    oauthclientCredentials:
+      secretName: my-secret   
+
+# STEPS 
+# 1- CREATE OAUTH SCREEN FROM GCLOUD CONSOLE
+# 2- CREATE OAUTH CREDENTIALS (GET CLIENT ID AND CLIENT SECRET)
+# 3- INSERT AUTH REDIRECT URI IN THE SECOND STEP  : https://iap.googleapis.com/v1/oauth/clientIds/CLIENT_ID:handleRedirect
+# 4- CREATE K8S SECRET FOR CLIENT ID AND SECRET 
+# 5- APPLY BACKENDCONFIG WITH THIS SECRET    

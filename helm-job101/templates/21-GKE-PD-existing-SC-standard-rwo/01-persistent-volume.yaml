@@ -1,0 +1,19 @@
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: pre-existing-disk
+# spec:
+#   storageClassName: gke-pd-standard-rwo-sc
+#   capacity:
+#     storage: 4Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   claimRef:
+#     namespace: default
+#     name: mysql-pv-claim
+#   gcePersistentDisk:
+        #     pdName: pre-existing-disk
+        #     fsType: ext4
+
+#  in case no pre existing disk to use  , do not use this PD 
+#  ,and pv claim will create new PD depending on the pvc specs (access mode , capacity and class name)

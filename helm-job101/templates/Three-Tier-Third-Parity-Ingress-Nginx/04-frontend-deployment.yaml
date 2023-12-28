@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-app-deployment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-deployment
+  template:
+    metadata:
+      labels:
+        app: frontend-deployment
+        tier: frontend
+    spec:
+      # volumes:
+      #   - name: vol-test
+      #     persistentVolumeClaim:
+      #       claimName: my-pvc
+          # hostPath:
+          #   path: /data/logs
+            
+      containers:
+        - name: nginx-app
+          image: "omar2023/lara101:frontend-nginx-1.0"
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 80
+          # command: ["run","service nginx start"]
+          # volumeMounts:
+          #   - mountPath: usr/share/nginx/html
+          #     name: vol-test
+              
+

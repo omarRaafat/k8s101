@@ -1,0 +1,21 @@
+{
+    "ClientToken": "655e37eb-1261-47a5-9378-5a086ffb9725",
+    "Tags": [],
+    "AccessPointId": "fsap-0d27e27901c81194a",
+    "AccessPointArn": "arn:aws:elasticfilesystem:us-east-1:660034698331:access-point/fsap-0d27e27901c81194a",
+    "FileSystemId": "fs-01fa618cf27cccf8d",
+    "PosixUser": {
+        "Uid": 1000,
+        "Gid": 1000
+    },
+    "RootDirectory": {
+        "Path": "/jenkins",
+        "CreationInfo": {
+            "OwnerUid": 1000,
+            "OwnerGid": 1000,
+            "Permissions": "777"
+        }
+    },
+    "OwnerId": "660034698331",
+    "LifeCycleState": "creating"
+}
