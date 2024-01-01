@@ -3,14 +3,38 @@ kind: BackendConfig
 metadata:
   name: my-backendconfig
 spec:
-  iap:
+
+  timeoutSec: 42 # Backend service timeout: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#timeout
+  connectionDraining: # Connection draining timeout: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#draining_timeout
+    drainingTimeoutSec: 62
+
+  logging: # HTTP access logging: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#http_logging
+    enable: true
+    sampleRate: 1.0
+
+  cdn:
     enabled: true
-    oauthclientCredentials:
-      secretName: my-secret   
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+      includeQueryString: false  
+
+  sessionAffinity:  # as sticky session (session persistent) ensures that requests from the same client are directed to the same backend server (prevent session expired issue)
+    affinityType: "CLIENT_IP" # to set it none remove CLIENT_IP : " " or use browser cookie by set GENERATED_COOKIE to set session persistent to browser
+
+  # iap:
+  #   enabled: true
+  #   oauthclientCredentials:
+  #     secretName: my-secret   
 
 # STEPS 
 # 1- CREATE OAUTH SCREEN FROM GCLOUD CONSOLE
 # 2- CREATE OAUTH CREDENTIALS (GET CLIENT ID AND CLIENT SECRET)
 # 3- INSERT AUTH REDIRECT URI IN THE SECOND STEP  : https://iap.googleapis.com/v1/oauth/clientIds/CLIENT_ID:handleRedirect
-# 4- CREATE K8S SECRET FOR CLIENT ID AND SECRET 
-# 5- APPLY BACKENDCONFIG WITH THIS SECRET    
+# 4- CREATE K8S SECRET FOR CLIENT ID AND SECRET : kubectl create secret generic my-secret --from-literal=client_id=client_id_key --from-literal=client_secret=client_secret_key 
+# 5- APPLY BACKENDCONFIG WITH THIS SECRET   
+
+# **** NOTE ***** 
+ # BackendConfig default/my-backendconfig is not valid: 
+ # iap and cdn cannot be enabled at the same time
+

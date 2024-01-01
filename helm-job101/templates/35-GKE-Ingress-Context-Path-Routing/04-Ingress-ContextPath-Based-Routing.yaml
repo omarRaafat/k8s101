@@ -5,16 +5,25 @@ metadata:
   annotations:
     # External Load Balancer  
     kubernetes.io/ingress.class: "gce"  
+
     # Static IP for Ingress Service
     kubernetes.io/ingress.global-static-ip-name: "k8s-global-static-ip"  # created by gcloud command
-    # Google Managed SSL Certificates
+    
+    # Google Managed SSL Certificates - **** COMMENT IT WHEN USE SELF SIGNED SSL ****
     networking.gke.io/managed-certificates: managed-cert-for-ingress
+
     # SSL Redirect HTTP to HTTPS
     networking.gke.io/v1beta1.FrontendConfig: "https-redirect-ingress-frontend-config" 
+
     # External DNS - For creating a Record Set in Google Cloud Cloud DNS
     external-dns.alpha.kubernetes.io/hostname: app.lara101.dev   # created by helm 
     
-spec: 
+spec:
+  # SSL Certs - Associate using Kubernetes Secrets         
+  # tls:
+  # - secretName: app-secret
+  # - secretName: app2-secret
+  # - secretName: app3-secret
   defaultBackend:
     service:
       name: app1-nginx-nodeport-service
@@ -52,3 +61,24 @@ spec:
 
 
 # helm upgrade --install external-dns external-dns/external-dns --set provider=google --set policy=sync --set google-zone-visibility=public --set txt-owner-id=k8s --set serviceAccount.create=false --set serviceAccount.name=K8S_SERVICE_ACCOUNT_NAME -n K8S_NS
+
+# **************
+# Create Self-Signed SSL Certificates and Kubernetes Secrets
+# Create your app key:
+# openssl genrsa -out app-ingress.key 2048
+
+# Create your app certificate signing request:
+# openssl req -new -key app-ingress.key -out app-ingress.csr -subj "/CN=app.domainname.com"
+
+# Create your app certificate:
+# openssl x509 -req -days 7300 -in app-ingress.csr -signkey app-ingress.key -out app-ingress.crt
+
+# Create a Secret that holds your app certificate and key:
+# kubectl create secret tls app-secret  --cert app-ingress.crt --key app-ingress.key
+
+# List Secrets
+# kubectl get secrets
+
+# ****************
+# Create Static External IP Address 1 
+# gcloud compute addresses create ADDRESS_NAME --global

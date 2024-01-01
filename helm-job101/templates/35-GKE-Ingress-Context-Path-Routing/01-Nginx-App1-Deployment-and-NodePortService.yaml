@@ -17,17 +17,18 @@ spec:
     spec:
       containers:
         - name: app1-nginx
-          image: stacksimplify/kube-nginxapp1:1.0.0
+          image: omar2023/lara101:lara101-v1
           ports:
-            - containerPort: 80      
-          readinessProbe:        # CUSTOM HEALTH CHECK
-              httpGet:
-                scheme: HTTP
-                path: app1/index.html
-                port: 80
-              initialDelaySeconds: 10
-              periodSeconds: 15
-              timeoutSeconds: 5              
+            - containerPort: 80  
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh" , "-c" , "service nginx start"]  
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "200m"          
+                
 ---
 apiVersion: v1
 kind: Service
