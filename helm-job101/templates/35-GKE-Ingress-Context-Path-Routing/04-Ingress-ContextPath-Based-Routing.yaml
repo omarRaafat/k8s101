@@ -10,13 +10,13 @@ metadata:
     kubernetes.io/ingress.global-static-ip-name: "k8s-global-static-ip"  # created by gcloud command
     
     # Google Managed SSL Certificates - **** COMMENT IT WHEN USE SELF SIGNED SSL ****
-    networking.gke.io/managed-certificates: managed-cert-for-ingress
+    # networking.gke.io/managed-certificates: managed-cert-for-ingress
 
     # SSL Redirect HTTP to HTTPS
-    networking.gke.io/v1beta1.FrontendConfig: "https-redirect-ingress-frontend-config" 
+    # networking.gke.io/v1beta1.FrontendConfig: "https-redirect-ingress-frontend-config" 
 
-    # External DNS - For creating a Record Set in Google Cloud Cloud DNS
-    external-dns.alpha.kubernetes.io/hostname: app.lara101.dev   # created by helm 
+    # External DNS 
+    external-dns.alpha.kubernetes.io/hostname: lara101.dev   # created by helm 
     
 spec:
   # SSL Certs - Associate using Kubernetes Secrets         
