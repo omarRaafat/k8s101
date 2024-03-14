@@ -1,2 +1,0 @@
-eksctl create cluster --name eks-cluster-demo --region us-east-1 --zones
-us-east-1a,us-east-1b --managed --nodegroup-name eks-worker-nodes

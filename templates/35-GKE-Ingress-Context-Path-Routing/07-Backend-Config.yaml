@@ -1,0 +1,53 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: my-backendconfig
+spec:
+
+  timeoutSec: 42 # Backend service timeout: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#timeout
+  connectionDraining: # Connection draining timeout: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#draining_timeout
+    drainingTimeoutSec: 62
+
+  logging: # HTTP access logging: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-features#http_logging
+    enable: true
+    sampleRate: 1.0
+
+  cdn:
+    enabled: true
+    cachePolicy:
+      includeHost: true
+      includeProtocol: true
+      includeQueryString: false  
+
+  sessionAffinity:  # as sticky session (session persistent) ensures that requests from the same client are directed to the same backend server (prevent session expired issue)
+    affinityType: "NONE" # to set it none remove CLIENT_IP : "NONE" or use browser cookie by set GENERATED_COOKIE to set session persistent to browser
+
+  # iap:     # Identity Aware Proxy
+  #   enabled: true
+  #   oauthclientCredentials:
+  #     secretName: my-secret   
+
+  # healthCheck:
+  #   checkIntervalSec: 5 # Default is 5 seconds
+  #   timeoutSec: 5 # The value of timeoutSec must be less than or equal to the checkIntervalSec
+  #   healthyThreshold: 2 # Default value 2
+  #   unhealthyThreshold: 2 # Default value 2
+  #   type: HTTP # The BackendConfig only supports creating health checks using the HTTP, HTTPS, or HTTP2 protocols
+  #   requestPath: /
+  #   port: 80
+
+  # securityPolicy: #security policy with predefinred rules using CLOUD ARMOR
+  #   name: "gke-security-policy-cloud-armor"
+
+
+# STEPS 
+# 1- CREATE OAUTH SCREEN FROM GCLOUD CONSOLE
+# 2- CREATE OAUTH CREDENTIALS (GET CLIENT ID AND CLIENT SECRET)
+# 3- INSERT AUTH REDIRECT URI IN THE SECOND STEP  : https://iap.googleapis.com/v1/oauth/clientIds/CLIENT_ID:handleRedirect
+# 4- CREATE K8S SECRET FOR CLIENT ID AND SECRET : kubectl create secret generic my-secret --from-literal=client_id=client_id_key --from-literal=client_secret=client_secret_key 
+# 5- APPLY BACKENDCONFIG WITH THIS SECRET   
+
+# **** NOTE ***** 
+ # BackendConfig default/my-backendconfig is not valid: 
+ # iap and cdn cannot be enabled at the same time
+

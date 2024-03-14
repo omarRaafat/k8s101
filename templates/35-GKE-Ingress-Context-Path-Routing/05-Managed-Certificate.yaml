@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: managed-cert-for-ingress
+spec:
+  domains:
+    - app.lara101.dev
+    - app2.lara101.dev
+    - app3.lara101.dev
+   
